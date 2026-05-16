@@ -199,7 +199,7 @@ const App = {
         dateFilter: ''
     },
     config: {
-        IPTV_TABLE: 'egy_customers',
+        IPTV_TABLE: 'iptv_customers',
         EGY_TABLE: 'egy_customers',
         DEFAULT_URL: window.APP_CONFIG?.SB_URL || '',
         DEFAULT_KEY: window.APP_CONFIG?.SB_KEY || ''
