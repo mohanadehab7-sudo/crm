@@ -1,0 +1,41 @@
+name: StreamCreed Manual Sync
+
+on:
+  workflow_dispatch:
+    inputs:
+      panel_user:
+        description: 'StreamCreed Username'
+        required: true
+        default: 'bahe2026'
+      panel_pass:
+        description: 'StreamCreed Password'
+        required: true
+      panel_key:
+        description: 'StreamCreed SQL Key'
+        required: true
+        default: 'mh123321'
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install playwright requests
+          playwright install chromium
+
+      - name: Run Sync Script
+        env:
+          SB_URL: ${{ secrets.SB_URL }}
+          SB_KEY: ${{ secrets.SB_KEY }}
+        run: |
+          python sync_streamcreed.py --user "${{ github.event.inputs.panel_user }}" --password "${{ github.event.inputs.panel_pass }}" --key "${{ github.event.inputs.panel_key }}"
