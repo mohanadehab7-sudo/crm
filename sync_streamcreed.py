@@ -15,16 +15,24 @@ MNG_LINES_URL = "https://cms.streamcreed.com/d33e53c4d1dc/userpanel/mnglines.php
 # Supabase Config - بتيجي من GitHub Secrets
 SB_URL = os.environ.get("SB_URL", "")
 SB_KEY = os.environ.get("SB_KEY", "")
-SB_TABLE = "egy_customers"
+SB_TABLE = "iptv_customers"
 
 def normalize_date(date_str):
     try:
         date_str = date_str.strip()
         if not date_str or date_str == '---': return None
+        # Remove any time component if present
+        date_str = date_str.split(' ')[0]
         if '/' in date_str:
-            d, m, y = date_str.split('/')
-            return f"{y}-{m.zfill(2)}-{d.zfill(2)}"
-        return date_str
+            parts = date_str.split('/')
+            if len(parts) == 3:
+                d, m, y = parts
+                return f"{y.strip()}-{m.strip().zfill(2)}-{d.strip().zfill(2)}"
+        if '-' in date_str:
+            parts = date_str.split('-')
+            if len(parts) == 3 and len(parts[0]) == 4:
+                return date_str  # already YYYY-MM-DD
+        return None
     except:
         return None
 
